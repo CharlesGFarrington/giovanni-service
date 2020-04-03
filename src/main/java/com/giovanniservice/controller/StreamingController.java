@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 /**
@@ -21,10 +22,14 @@ public class StreamingController {
         this.streamingService = streamingService;
     }
 
+    /**
+     * Return a stream of the file.
+     * @param fileId id of the file.
+     * @return
+     */
     @GetMapping("/{fileId}")
-    public ResponseEntity<StreamingResponseBody> download(@PathVariable String fileId) {
-        StreamingResponseBody stream = streamingService.downloadFile(fileId);
-
-        return new ResponseEntity<>(stream, HttpStatus.OK);
+    @ResponseBody
+    public StreamingResponseBody download(@PathVariable String fileId) {
+        return streamingService.downloadFile(fileId);
     }
 }
