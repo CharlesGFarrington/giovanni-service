@@ -1,6 +1,7 @@
 package com.giovanniservice.controller;
 
-import com.giovanniservice.dto.AlbumDto;
+import com.giovanniservice.dto.DetailedAlbumDto;
+import com.giovanniservice.dto.SimpleAlbumDto;
 import com.giovanniservice.entity.Album;
 import com.giovanniservice.service.AlbumService;
 import org.modelmapper.ModelMapper;
@@ -35,23 +36,23 @@ public class AlbumController {
      * @return all albums.
      */
     @GetMapping
-    public List<AlbumDto> getAlbums() {
+    public List<SimpleAlbumDto> getAlbums() {
         List<Album> albums = albumService.getAlbums();
         return albums.stream()
-                .map(album -> modelMapper.map(album, AlbumDto.class))
+                .map(album -> modelMapper.map(album, SimpleAlbumDto.class))
                 .collect(Collectors.toList());
     }
 
     /**
      * Create an album.
-     * @param albumDto album to create.
+     * @param simpleAlbumDto album to create.
      * @return the created album.
      */
     @PostMapping
-    public AlbumDto createAlbum(@Valid @RequestBody AlbumDto albumDto) {
-        Album album = modelMapper.map(albumDto, Album.class);
+    public SimpleAlbumDto createAlbum(@Valid @RequestBody SimpleAlbumDto simpleAlbumDto) {
+        Album album = modelMapper.map(simpleAlbumDto, Album.class);
         Album albumCreated = albumService.addAlbum(album);
-        return modelMapper.map(albumCreated, AlbumDto.class);
+        return modelMapper.map(albumCreated, SimpleAlbumDto.class);
     }
 
     /**
@@ -60,9 +61,9 @@ public class AlbumController {
      * @return the album.
      */
     @GetMapping("/{albumId}")
-    public AlbumDto getAlbum(@PathVariable Integer albumId) {
+    public DetailedAlbumDto getAlbum(@PathVariable Integer albumId) {
         Album album = albumService.getAlbum(albumId);
-        return modelMapper.map(album, AlbumDto.class);
+        return modelMapper.map(album, DetailedAlbumDto.class);
     }
 
     /**

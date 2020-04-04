@@ -7,12 +7,12 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
- * Model class for albums.
+ * Model class for detailed album information.
  */
 @Getter
 @Setter
-public class AlbumDto {
+public class DetailedAlbumDto {
     @NotNull
     private String title;
-    private List<TrackDto> tracks;
+    private List<DetailedTrackDto> tracks;
 }

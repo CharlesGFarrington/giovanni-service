@@ -4,6 +4,8 @@ import com.giovanniservice.entity.Track;
 import com.giovanniservice.repository.TrackRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 /**
  * Service class for tracks.
  */
@@ -21,6 +23,8 @@ public class TrackService {
      * @return the created track.
      */
     public Track addTrack(Track track) {
+        String trackBlobKey = UUID.randomUUID().toString();
+        track.setBlobKey(trackBlobKey);
         return trackRepository.save(track);
     }
 

@@ -9,3 +9,5 @@ spring:
     password: password
 s3:
   bucket-name: infinity-songbook.test
+aws-access-key: test
+aws-secret-key: test

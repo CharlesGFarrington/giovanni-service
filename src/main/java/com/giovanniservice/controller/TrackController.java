@@ -1,6 +1,6 @@
 package com.giovanniservice.controller;
 
-import com.giovanniservice.dto.TrackDto;
+import com.giovanniservice.dto.DetailedTrackDto;
 import com.giovanniservice.entity.Track;
 import com.giovanniservice.service.TrackService;
 import org.modelmapper.ModelMapper;
@@ -29,16 +29,16 @@ public class TrackController {
 
     /**
      * Add a new track.
-     * @param trackDto track to add.
+     * @param detailedTrackDto track to add.
      * @return the saved track.
      */
     @PostMapping
-    public TrackDto createTrack(@Valid @RequestBody TrackDto trackDto) {
-        Track track = modelMapper.map(trackDto, Track.class);
+    public DetailedTrackDto createTrack(@Valid @RequestBody DetailedTrackDto detailedTrackDto) {
+        Track track = modelMapper.map(detailedTrackDto, Track.class);
         // TODO make this better.
         track.setId(null);
         Track trackCreated = trackService.addTrack(track);
-        return modelMapper.map(trackCreated, TrackDto.class);
+        return modelMapper.map(trackCreated, DetailedTrackDto.class);
     }
 
     /**
