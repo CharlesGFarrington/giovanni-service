@@ -14,6 +14,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+/**
+ * Service class operations going to AWS S3.
+ */
 @Service
 public class BlobStorageService {
     private static String EMPTY_FILE = "File with key %s is an empty file.";
@@ -30,7 +33,6 @@ public class BlobStorageService {
      * Upload a file to the s3 bucket.
      * @param blobKey key to save the file to in S3.
      * @param file file to upload.
-     * @return generated key for the file.
      */
     public void addFileToS3(String blobKey, MultipartFile file) {
         if (file.isEmpty()) {
@@ -51,7 +53,6 @@ public class BlobStorageService {
      * Upload a file to the s3 bucket.
      * @param blobKey key to save the file to in S3.
      * @param file file to upload.
-     * @return generated key for the file.
      */
     public void addFileToS3(String blobKey, File file) {
         s3Client.putObject(bucketName, blobKey, file);
@@ -65,7 +66,6 @@ public class BlobStorageService {
     public StreamingResponseBody streamFileFromS3(String blobKey) {
         S3Object object = s3Client.getObject(bucketName, blobKey);
         S3ObjectInputStream inputStream = object.getObjectContent();
-        StreamingResponseBody stream = out -> out.write(inputStream.readAllBytes());
-        return stream;
+        return out -> out.write(inputStream.readAllBytes());
     }
 }

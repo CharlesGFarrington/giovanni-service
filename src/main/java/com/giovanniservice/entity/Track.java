@@ -26,6 +26,8 @@ public class Track {
 
     private String name;
 
+    private String songwriter;
+
     private Integer size;
 
     private Integer trackNumber;

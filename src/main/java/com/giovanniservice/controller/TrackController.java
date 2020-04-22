@@ -1,6 +1,6 @@
 package com.giovanniservice.controller;
 
-import com.giovanniservice.dto.DetailedTrackDto;
+import com.giovanniservice.dto.TrackDto;
 import com.giovanniservice.entity.Track;
 import com.giovanniservice.service.TrackService;
 import org.modelmapper.ModelMapper;
@@ -29,16 +29,15 @@ public class TrackController {
 
     /**
      * Add a new track.
-     * @param detailedTrackDto track to add.
+     * @param trackDto track to add.
      * @return the saved track.
      */
     @PostMapping
-    public DetailedTrackDto createTrack(@Valid @RequestBody DetailedTrackDto detailedTrackDto) {
-        Track track = modelMapper.map(detailedTrackDto, Track.class);
-        // TODO make this better.
-        track.setId(null);
+    public TrackDto createTrack(@PathVariable Integer albumId, @Valid @RequestBody TrackDto trackDto) {
+        trackDto.setAlbumId(albumId);
+        Track track = modelMapper.map(trackDto, Track.class);
         Track trackCreated = trackService.addTrack(track);
-        return modelMapper.map(trackCreated, DetailedTrackDto.class);
+        return modelMapper.map(trackCreated, TrackDto.class);
     }
 
     /**
@@ -46,7 +45,7 @@ public class TrackController {
      * @param trackId the track Id.
      */
     @DeleteMapping("/{trackId}")
-    public void deleteAlbum(@PathVariable Integer trackId) {
+    public void deleteTrack(@PathVariable Integer trackId) {
         trackService.deleteTrack(trackId);
     }
 }

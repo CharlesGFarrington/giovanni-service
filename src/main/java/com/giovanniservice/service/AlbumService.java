@@ -1,5 +1,6 @@
 package com.giovanniservice.service;
 
+import com.giovanniservice.dto.AlbumDto;
 import com.giovanniservice.entity.Album;
 import com.giovanniservice.repository.AlbumRepository;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,16 @@ public class AlbumService {
     public Album getAlbum(Integer albumId) {
         return albumRepository.findById(albumId)
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ALBUM_NOT_FOUND, albumId)));
+    }
+
+    /**
+     * Find album with the given id.
+     * @return album.
+     */
+    public Album updateAlbum(Integer albumId, AlbumDto album) {
+        Album albumToUpdate = albumRepository.getOne(albumId);
+        albumToUpdate.setTitle(album.getTitle());
+        return albumRepository.save(albumToUpdate);
     }
 
     /**
