@@ -1,6 +1,7 @@
 package com.giovanniservice.controller;
 
 import com.giovanniservice.dto.AlbumDto;
+import com.giovanniservice.dto.CreateAlbumDto;
 import com.giovanniservice.entity.Album;
 import com.giovanniservice.service.AlbumService;
 import org.modelmapper.ModelMapper;
@@ -47,12 +48,12 @@ public class AlbumController {
 
     /**
      * Create an album.
-     * @param simpleAlbumDto album to create.
+     * @param albumDto album to create.
      * @return the created album.
      */
     @PostMapping
-    public AlbumDto createAlbum(@Valid @RequestBody AlbumDto simpleAlbumDto) {
-        Album album = modelMapper.map(simpleAlbumDto, Album.class);
+    public AlbumDto createAlbum(@Valid @RequestBody CreateAlbumDto albumDto) {
+        Album album = modelMapper.map(albumDto, Album.class);
         Album albumCreated = albumService.addAlbum(album);
         return modelMapper.map(albumCreated, AlbumDto.class);
     }
@@ -72,7 +73,7 @@ public class AlbumController {
      * Update album with specified album Id.
      * @param albumId album Id.
      * @param albumDto new album details.
-     * @return the created album.
+     * @return the edited album.
      */
     @PatchMapping("/{albumId}")
     public AlbumDto updateAlbum(@PathVariable Integer albumId, @Valid @RequestBody AlbumDto albumDto) {

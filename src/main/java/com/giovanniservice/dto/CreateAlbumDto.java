@@ -4,19 +4,15 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 /**
- * Model class for album information.
+ * Model class for album information on create.
  */
 @Getter
 @Setter
-public class AlbumDto {
-    @NotNull
-    private Integer id;
+public class CreateAlbumDto {
     @NotNull
     private String title;
     @NotNull
     private String artistId;
-    private List<TrackDto> tracks;
 }

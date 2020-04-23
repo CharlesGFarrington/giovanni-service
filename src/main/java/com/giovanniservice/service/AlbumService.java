@@ -38,7 +38,8 @@ public class AlbumService {
     }
 
     /**
-     * Find album with the given id.
+     * Find the album with the given id.
+     * @param albumId album Id.
      * @return album.
      */
     public Album getAlbum(Integer albumId) {
@@ -47,7 +48,7 @@ public class AlbumService {
     }
 
     /**
-     * Find album with the given id.
+     * Update the album with the given id.
      * @return album.
      */
     public Album updateAlbum(Integer albumId, AlbumDto album) {

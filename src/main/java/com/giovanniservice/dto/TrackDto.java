@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 public class TrackDto {
     private String blobKey;
-    private String name;
+    private String title;
     private String songwriter;
     private Integer size;
     private Integer trackNumber;

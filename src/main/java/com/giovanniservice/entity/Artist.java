@@ -5,12 +5,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 /**
  * Entity class for tracks.
@@ -19,22 +18,13 @@ import javax.persistence.ManyToOne;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Track {
+public class Artist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String title;
+    private String name;
 
-    private String songwriter;
-
-    private Integer size;
-
-    private Integer trackNumber;
-
-    @ManyToOne
-    @JoinColumn(foreignKey = @ForeignKey(name = "FK_ALBUM_ID"))
-    private Album album;
-
-    private String blobKey;
+    @OneToMany(mappedBy = "artist")
+    private List<Album> albums;
 }
