@@ -1,8 +1,9 @@
 package com.giovanniservice.service;
 
-import com.giovanniservice.dto.ArtistDto;
+import com.giovanniservice.dto.EditArtistDto;
 import com.giovanniservice.entity.Artist;
 import com.giovanniservice.repository.ArtistRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -14,17 +15,20 @@ import javax.persistence.EntityNotFoundException;
 public class ArtistService {
     private static String ARTIST_NOT_FOUND = "Could not find the artist with id %d";
     private ArtistRepository artistRepository;
+    private ModelMapper modelMapper;
 
-    public ArtistService(ArtistRepository artistRepository) {
+    public ArtistService(ArtistRepository artistRepository, ModelMapper modelMapper) {
         this.artistRepository = artistRepository;
+        this.modelMapper = modelMapper;
     }
 
     /**
      * Add an artist.
-     * @param artist artist to add.
+     * @param artistDto artist to add.
      * @return the created artist.
      */
-    public Artist registerArtist(Artist artist) {
+    public Artist registerArtist(EditArtistDto artistDto) {
+        Artist artist = modelMapper.map(artistDto, Artist.class);
         return artistRepository.save(artist);
     }
 
@@ -44,7 +48,7 @@ public class ArtistService {
      * @param artist new artist details.
      * @return artist.
      */
-    public Artist updateArtist(Integer artistId, ArtistDto artist) {
+    public Artist updateArtist(Integer artistId, EditArtistDto artist) {
         Artist artistToUpdate = artistRepository.getOne(artistId);
         artistToUpdate.setName(artist.getName());
         return artistRepository.save(artistToUpdate);

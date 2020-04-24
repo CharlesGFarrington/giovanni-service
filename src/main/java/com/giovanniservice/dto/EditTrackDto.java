@@ -6,13 +6,14 @@ import lombok.Setter;
 import javax.validation.constraints.NotNull;
 
 /**
- * Model class for album information on create.
+ * Model class for detailed track information.
  */
 @Getter
 @Setter
-public class CreateAlbumDto {
+public class EditTrackDto {
     @NotNull
     private String title;
-    @NotNull
-    private String artistId;
+    private String songwriter;
+    private Integer size;
+    private Integer trackNumber;
 }

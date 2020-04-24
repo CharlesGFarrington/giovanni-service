@@ -11,10 +11,8 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class ArtistDto {
+public class ArtistDto extends EditArtistDto {
     @NotNull
     private Integer id;
-    @NotNull
-    private String name;
     private List<AlbumDto> albums;
 }

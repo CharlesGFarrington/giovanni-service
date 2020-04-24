@@ -11,11 +11,9 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class AlbumDto {
+public class AlbumDto extends EditAlbumDto {
     @NotNull
     private Integer id;
-    @NotNull
-    private String title;
     @NotNull
     private String artistId;
     private List<TrackDto> tracks;

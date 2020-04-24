@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
  */
 @Getter
 @Setter
-public class RegisterArtistDto {
+public class EditArtistDto {
     @NotNull
     private String name;
 }

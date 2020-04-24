@@ -8,11 +8,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class TrackDto {
+public class TrackDto extends EditTrackDto {
     private String blobKey;
-    private String title;
-    private String songwriter;
-    private Integer size;
-    private Integer trackNumber;
     private Integer albumId;
 }

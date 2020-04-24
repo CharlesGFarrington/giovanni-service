@@ -1,7 +1,7 @@
 package com.giovanniservice.controller;
 
 import com.giovanniservice.dto.ArtistDto;
-import com.giovanniservice.dto.RegisterArtistDto;
+import com.giovanniservice.dto.EditArtistDto;
 import com.giovanniservice.entity.Artist;
 import com.giovanniservice.service.ArtistService;
 import org.modelmapper.ModelMapper;
@@ -38,9 +38,8 @@ public class ArtistController {
      * @return the registered artist.
      */
     @PostMapping
-    public ArtistDto registerArtist(@Valid @RequestBody RegisterArtistDto artistDto) {
-        Artist artist = modelMapper.map(artistDto, Artist.class);
-        Artist artistRegistered = artistService.registerArtist(artist);
+    public ArtistDto registerArtist(@Valid @RequestBody EditArtistDto artistDto) {
+        Artist artistRegistered = artistService.registerArtist(artistDto);
         return modelMapper.map(artistRegistered, ArtistDto.class);
     }
 
@@ -62,11 +61,10 @@ public class ArtistController {
      * @return the edited artist.
      */
     @PatchMapping("/{artistId}")
-    public ArtistDto updateArtist(@PathVariable Integer artistId, @Valid @RequestBody ArtistDto artistDto) {
+    public ArtistDto updateArtist(@PathVariable Integer artistId, @Valid @RequestBody EditArtistDto artistDto) {
         Artist artist = artistService.updateArtist(artistId, artistDto);
         return modelMapper.map(artist, ArtistDto.class);
     }
-
 
     /**
      * Delete the artist with specified artist Id.

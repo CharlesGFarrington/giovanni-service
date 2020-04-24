@@ -1,7 +1,7 @@
 package com.giovanniservice.controller;
 
 import com.giovanniservice.dto.AlbumDto;
-import com.giovanniservice.dto.CreateAlbumDto;
+import com.giovanniservice.dto.EditAlbumDto;
 import com.giovanniservice.entity.Album;
 import com.giovanniservice.service.AlbumService;
 import org.modelmapper.ModelMapper;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  */
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
-@RequestMapping("albums")
+@RequestMapping("artists/{artistId}/albums")
 public class AlbumController {
     private AlbumService albumService;
     protected ModelMapper modelMapper;
@@ -52,9 +52,8 @@ public class AlbumController {
      * @return the created album.
      */
     @PostMapping
-    public AlbumDto createAlbum(@Valid @RequestBody CreateAlbumDto albumDto) {
-        Album album = modelMapper.map(albumDto, Album.class);
-        Album albumCreated = albumService.addAlbum(album);
+    public AlbumDto createAlbum(@PathVariable Integer artistId, @Valid @RequestBody EditAlbumDto albumDto) {
+        Album albumCreated = albumService.addAlbum(artistId, albumDto);
         return modelMapper.map(albumCreated, AlbumDto.class);
     }
 
@@ -76,7 +75,7 @@ public class AlbumController {
      * @return the edited album.
      */
     @PatchMapping("/{albumId}")
-    public AlbumDto updateAlbum(@PathVariable Integer albumId, @Valid @RequestBody AlbumDto albumDto) {
+    public AlbumDto updateAlbum(@PathVariable Integer albumId, @Valid @RequestBody EditAlbumDto albumDto) {
         Album album = albumService.updateAlbum(albumId, albumDto);
         return modelMapper.map(album, AlbumDto.class);
     }
