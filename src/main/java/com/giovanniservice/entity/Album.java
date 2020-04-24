@@ -1,5 +1,6 @@
 package com.giovanniservice.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,8 +22,9 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Album {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,3 +39,4 @@ public class Album {
     @OneToMany(mappedBy = "album")
     private List<Track> tracks;
 }
+
