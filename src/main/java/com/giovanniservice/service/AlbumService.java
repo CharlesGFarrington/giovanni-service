@@ -57,11 +57,13 @@ public class AlbumService {
 
     /**
      * Update the album with the given id.
+     * @param albumId album Id.
+     * @param albumDto new album details.
      * @return album.
      */
-    public Album updateAlbum(Integer albumId, EditAlbumDto album) {
+    public Album updateAlbum(Integer albumId, EditAlbumDto albumDto) {
         Album albumToUpdate = albumRepository.getOne(albumId);
-        albumToUpdate.setTitle(album.getTitle());
+        albumToUpdate.setTitle(albumDto.getTitle());
         return albumRepository.save(albumToUpdate);
     }
 
