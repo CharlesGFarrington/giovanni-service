@@ -1,12 +1,13 @@
 package com.giovanniservice.service;
 
 import com.giovanniservice.dto.EditTrackDto;
-import com.giovanniservice.entity.Album;
 import com.giovanniservice.entity.Track;
+import com.giovanniservice.repository.AlbumRepository;
 import com.giovanniservice.repository.TrackRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -15,11 +16,22 @@ import java.util.UUID;
 @Service
 public class TrackService {
     private TrackRepository trackRepository;
+    private AlbumRepository albumRepository;
     private ModelMapper modelMapper;
 
-    public TrackService(TrackRepository trackRepository, ModelMapper modelMapper) {
+    public TrackService(TrackRepository trackRepository, AlbumRepository albumRepository, ModelMapper modelMapper) {
         this.trackRepository = trackRepository;
+        this.albumRepository = albumRepository;
         this.modelMapper = modelMapper;
+    }
+
+    /**
+     * Find all tracks in the album.
+     * @param albumId the album.
+     * @return all tracks in the album.
+     */
+    public List<Track> getTracks(Integer albumId) {
+        return trackRepository.findAllByAlbumId(albumId);
     }
 
     /**
@@ -31,7 +43,7 @@ public class TrackService {
         Track track = modelMapper.map(trackDto, Track.class);
         String trackBlobKey = UUID.randomUUID().toString();
         track.setBlobKey(trackBlobKey);
-        track.setAlbum(Album.builder().id(albumId).build());
+        track.setAlbum(albumRepository.getOne(albumId));
         return trackRepository.save(track);
     }
 

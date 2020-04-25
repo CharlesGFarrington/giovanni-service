@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 /**
  * Service class for artists
@@ -21,6 +22,15 @@ public class ArtistService {
         this.artistRepository = artistRepository;
         this.modelMapper = modelMapper;
     }
+
+    /**
+     * Find all artists.
+     * @return artists.
+     */
+    public List<Artist> getArtists() {
+        return artistRepository.findAll();
+    }
+
 
     /**
      * Add an artist.

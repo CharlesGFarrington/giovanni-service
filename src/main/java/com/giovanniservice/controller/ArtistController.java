@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Controller class for artists.
@@ -30,6 +32,18 @@ public class ArtistController {
     public ArtistController(ArtistService artistService, ModelMapper modelMapper) {
         this.artistService = artistService;
         this.modelMapper = modelMapper;
+    }
+
+    /**
+     * Find all artists.
+     * @return all artists.
+     */
+    @GetMapping
+    public List<ArtistDto> getArtists() {
+        List<Artist> artists = artistService.getArtists();
+        return artists.stream()
+                .map(artist -> modelMapper.map(artist, ArtistDto.class))
+                .collect(Collectors.toList());
     }
 
     /**

@@ -39,8 +39,8 @@ public class AlbumController {
      * @return all albums.
      */
     @GetMapping
-    public List<AlbumDto> getAlbums() {
-        List<Album> albums = albumService.getAlbums();
+    public List<AlbumDto> getAlbums(@PathVariable Integer artistId) {
+        List<Album> albums = albumService.getAlbums(artistId);
         return albums.stream()
                 .map(album -> modelMapper.map(album, AlbumDto.class))
                 .collect(Collectors.toList());
