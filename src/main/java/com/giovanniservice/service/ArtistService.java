@@ -1,7 +1,10 @@
 package com.giovanniservice.service;
 
+import com.giovanniservice.dto.EditAlbumDto;
 import com.giovanniservice.dto.EditArtistDto;
+import com.giovanniservice.entity.Album;
 import com.giovanniservice.entity.Artist;
+import com.giovanniservice.repository.AlbumRepository;
 import com.giovanniservice.repository.ArtistRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -16,10 +19,12 @@ import java.util.List;
 public class ArtistService {
     private static String ARTIST_NOT_FOUND = "Could not find the artist with id %d";
     private ArtistRepository artistRepository;
+    private AlbumRepository albumRepository;
     private ModelMapper modelMapper;
 
-    public ArtistService(ArtistRepository artistRepository, ModelMapper modelMapper) {
+    public ArtistService(ArtistRepository artistRepository, AlbumRepository albumRepository, ModelMapper modelMapper) {
         this.artistRepository = artistRepository;
+        this.albumRepository = albumRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -62,6 +67,27 @@ public class ArtistService {
         Artist artistToUpdate = artistRepository.getOne(artistId);
         artistToUpdate.setName(artist.getName());
         return artistRepository.save(artistToUpdate);
+    }
+
+    /**
+     * Add an album.
+     * @param artistId artist Id.
+     * @param albumDto album to add.
+     * @return the created album.
+     */
+    public Album addAlbum(Integer artistId, EditAlbumDto albumDto) {
+        Album album = modelMapper.map(albumDto, Album.class);
+        album.setArtist(artistRepository.getOne(artistId));
+        return albumRepository.save(album);
+    }
+
+    /**
+     * Find all albums for the given artist.
+     * @param artistId the artist Id.
+     * @return albums.
+     */
+    public List<Album> getAlbums(Integer artistId) {
+        return albumRepository.findAllByArtistId(artistId);
     }
 
     /**

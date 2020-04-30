@@ -1,7 +1,10 @@
 package com.giovanniservice.controller;
 
+import com.giovanniservice.dto.AlbumDto;
 import com.giovanniservice.dto.ArtistDto;
+import com.giovanniservice.dto.EditAlbumDto;
 import com.giovanniservice.dto.EditArtistDto;
+import com.giovanniservice.entity.Album;
 import com.giovanniservice.entity.Artist;
 import com.giovanniservice.service.ArtistService;
 import org.modelmapper.ModelMapper;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -81,11 +85,34 @@ public class ArtistController {
     }
 
     /**
+     * Create an album.
+     * @param albumDto album to create.
+     * @return the created album.
+     */
+    @PostMapping("/{artistId}/albums")
+    public AlbumDto createAlbum(@PathVariable Integer artistId, @Valid @RequestBody EditAlbumDto albumDto) {
+        Album albumCreated = artistService.addAlbum(artistId, albumDto);
+        return modelMapper.map(albumCreated, AlbumDto.class);
+    }
+
+    /**
+     * Find all albums belonging to the given artist.
+     * @return all albums.
+     */
+    @GetMapping("/{artistId}/albums")
+    public List<AlbumDto> getAlbums(@PathVariable Integer artistId) {
+        List<Album> albums = artistService.getAlbums(artistId);
+        return albums.stream()
+                .map(album -> modelMapper.map(album, AlbumDto.class))
+                .collect(Collectors.toList());
+    }
+
+    /**
      * Delete the artist with specified artist Id.
      * @param artistId the artist Id.
      */
     @DeleteMapping("/{artistId}")
-    public void deleteAlbum(@PathVariable Integer artistId) {
+    public void deleteArtist(@PathVariable Integer artistId) {
         artistService.deleteArtist(artistId);
     }
 }

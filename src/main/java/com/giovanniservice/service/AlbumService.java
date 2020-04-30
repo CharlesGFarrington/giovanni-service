@@ -1,14 +1,17 @@
 package com.giovanniservice.service;
 
 import com.giovanniservice.dto.EditAlbumDto;
+import com.giovanniservice.dto.EditTrackDto;
 import com.giovanniservice.entity.Album;
+import com.giovanniservice.entity.Track;
 import com.giovanniservice.repository.AlbumRepository;
-import com.giovanniservice.repository.ArtistRepository;
+import com.giovanniservice.repository.TrackRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Service class for albums
@@ -17,34 +20,13 @@ import java.util.List;
 public class AlbumService {
     private static String ALBUM_NOT_FOUND = "Could not find the album with id %d";
     private AlbumRepository albumRepository;
-    private ArtistRepository artistRepository;
+    private TrackRepository trackRepository;
     private ModelMapper modelMapper;
 
-    public AlbumService(AlbumRepository albumRepository, ArtistRepository artistRepository, ModelMapper modelMapper) {
+    public AlbumService(AlbumRepository albumRepository, TrackRepository trackRepository, ModelMapper modelMapper) {
         this.albumRepository = albumRepository;
-        this.artistRepository = artistRepository;
+        this.trackRepository = trackRepository;
         this.modelMapper = modelMapper;
-    }
-
-    /**
-     * Find all albums for the given artist.
-     * @param artistId the artist Id.
-     * @return albums.
-     */
-    public List<Album> getAlbums(Integer artistId) {
-        return albumRepository.findAllByArtistId(artistId);
-    }
-
-    /**
-     * Add an album.
-     * @param artistId artist Id.
-     * @param albumDto album to add.
-     * @return the created album.
-     */
-    public Album addAlbum(Integer artistId, EditAlbumDto albumDto) {
-        Album album = modelMapper.map(albumDto, Album.class);
-        album.setArtist(artistRepository.getOne(artistId));
-        return albumRepository.save(album);
     }
 
     /**
@@ -67,6 +49,28 @@ public class AlbumService {
         Album albumToUpdate = albumRepository.getOne(albumId);
         albumToUpdate.setTitle(albumDto.getTitle());
         return albumRepository.save(albumToUpdate);
+    }
+
+    /**
+     * Find all tracks in the album.
+     * @param albumId the album.
+     * @return all tracks in the album.
+     */
+    public List<Track> getTracks(Integer albumId) {
+        return trackRepository.findAllByAlbumId(albumId);
+    }
+
+    /**
+     * Create a track.
+     * @param trackDto the track to create.
+     * @return the created track.
+     */
+    public Track addTrack(Integer albumId, EditTrackDto trackDto) {
+        Track track = modelMapper.map(trackDto, Track.class);
+        String trackBlobKey = UUID.randomUUID().toString();
+        track.setBlobKey(trackBlobKey);
+        track.setAlbum(albumRepository.getOne(albumId));
+        return trackRepository.save(track);
     }
 
     /**
