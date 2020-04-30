@@ -2,7 +2,10 @@ package com.giovanniservice.controller;
 
 import com.giovanniservice.dto.AlbumDto;
 import com.giovanniservice.dto.EditAlbumDto;
+import com.giovanniservice.dto.EditTrackDto;
+import com.giovanniservice.dto.TrackDto;
 import com.giovanniservice.entity.Album;
+import com.giovanniservice.entity.Track;
 import com.giovanniservice.service.AlbumService;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,7 +27,7 @@ import java.util.stream.Collectors;
  */
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
-@RequestMapping("artists/{artistId}/albums")
+@RequestMapping("albums")
 public class AlbumController {
     private AlbumService albumService;
     protected ModelMapper modelMapper;
@@ -32,29 +35,6 @@ public class AlbumController {
     public AlbumController(AlbumService albumService, ModelMapper modelMapper) {
         this.albumService = albumService;
         this.modelMapper = modelMapper;
-    }
-
-    /**
-     * Find all albums.
-     * @return all albums.
-     */
-    @GetMapping
-    public List<AlbumDto> getAlbums(@PathVariable Integer artistId) {
-        List<Album> albums = albumService.getAlbums(artistId);
-        return albums.stream()
-                .map(album -> modelMapper.map(album, AlbumDto.class))
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * Create an album.
-     * @param albumDto album to create.
-     * @return the created album.
-     */
-    @PostMapping
-    public AlbumDto createAlbum(@PathVariable Integer artistId, @Valid @RequestBody EditAlbumDto albumDto) {
-        Album albumCreated = albumService.addAlbum(artistId, albumDto);
-        return modelMapper.map(albumCreated, AlbumDto.class);
     }
 
     /**
@@ -80,6 +60,29 @@ public class AlbumController {
         return modelMapper.map(album, AlbumDto.class);
     }
 
+    /**
+     * Return all tracks in the album.
+     * @param albumId the id of the album.
+     * @return tracks.
+     */
+    @GetMapping("/{albumId}/tracks")
+    public List<TrackDto> getTracks(@PathVariable Integer albumId) {
+        List<Track> tracks = albumService.getTracks(albumId);
+        return tracks.stream()
+                .map(track -> modelMapper.map(track, TrackDto.class))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Add a new track to the album.
+     * @param trackDto track to add.
+     * @return the saved track.
+     */
+    @PostMapping("/{albumId}/tracks")
+    public TrackDto createTrack(@PathVariable Integer albumId, @Valid @RequestBody EditTrackDto trackDto) {
+        Track trackCreated = albumService.addTrack(albumId, trackDto);
+        return modelMapper.map(trackCreated, TrackDto.class);
+    }
 
     /**
      * Delete the album with specified album Id.
