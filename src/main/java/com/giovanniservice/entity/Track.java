@@ -37,4 +37,8 @@ public class Track {
     private Album album;
 
     private String blobKey;
+
+    private String lyrics;
+
+    private Boolean availableToPublic;
 }

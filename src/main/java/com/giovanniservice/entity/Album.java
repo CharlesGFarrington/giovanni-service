@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -34,5 +35,11 @@ public class Album {
 
     @OneToMany(mappedBy = "album")
     private List<Track> tracks;
+
+    private String artworkBlobKey;
+
+    private Date releaseDate;
+
+    private Boolean availableToPublic;
 }
 

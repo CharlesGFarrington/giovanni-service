@@ -17,4 +17,6 @@ public class AlbumDto extends EditAlbumDto {
     @NotNull
     private String artistId;
     private List<TrackDto> tracks;
+
+    private String artworkBlobKey;
 }
