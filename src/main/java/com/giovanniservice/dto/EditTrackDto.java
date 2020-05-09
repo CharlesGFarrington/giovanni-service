@@ -7,7 +7,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 /**
- * Model class for detailed track information.
+ * Model class for track information.
  */
 @Getter
 @Setter
@@ -16,7 +16,6 @@ public class EditTrackDto {
     @NotEmpty
     private String title;
     private String songwriter;
-    private Integer size;
     private Integer trackNumber;
     private String lyrics;
     @NotNull

@@ -15,6 +15,5 @@ public class EditArtistDto {
     @NotNull
     @NotEmpty
     private String name;
-
     private String description;
 }

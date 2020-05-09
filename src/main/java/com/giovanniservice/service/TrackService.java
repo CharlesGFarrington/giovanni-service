@@ -28,15 +28,8 @@ public class TrackService {
         trackToUpdate.setTitle(trackDto.getTitle());
         trackToUpdate.setSongwriter(trackDto.getSongwriter());
         trackToUpdate.setTrackNumber(trackDto.getTrackNumber());
-        trackToUpdate.setSize(trackDto.getSize());
+        trackToUpdate.setLyrics(trackDto.getLyrics());
+        trackToUpdate.setAvailableToPublic(trackDto.getAvailableToPublic());
         return trackRepository.save(trackToUpdate);
-    }
-
-    /**
-     * Delete the track with the specified track id.
-     * @param trackId track id.
-     */
-    public void deleteTrack(Integer trackId) {
-        trackRepository.deleteById(trackId);
     }
 }

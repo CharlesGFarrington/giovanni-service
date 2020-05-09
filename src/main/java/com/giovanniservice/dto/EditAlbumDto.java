@@ -16,9 +16,8 @@ public class EditAlbumDto {
     @NotNull
     @NotEmpty
     private String title;
-
     private Date releaseDate;
-
     @NotNull
     private Boolean availableToPublic;
+    private String artworkBlobKey;
 }

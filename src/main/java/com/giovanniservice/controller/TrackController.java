@@ -5,7 +5,7 @@ import com.giovanniservice.dto.TrackDto;
 import com.giovanniservice.entity.Track;
 import com.giovanniservice.service.TrackService;
 import org.modelmapper.ModelMapper;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +17,7 @@ import javax.validation.Valid;
 /**
  * Controller for tracks.
  */
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 @RequestMapping("tracks")
 public class TrackController {
@@ -38,14 +39,5 @@ public class TrackController {
     public TrackDto updateTrack(@PathVariable Integer trackId, @Valid @RequestBody EditTrackDto trackDto) {
         Track track = trackService.updateTrack(trackId, trackDto);
         return modelMapper.map(track, TrackDto.class);
-    }
-
-    /**
-     * Delete the track with specified track Id.
-     * @param trackId the track Id.
-     */
-    @DeleteMapping("/{trackId}")
-    public void deleteTrack(@PathVariable Integer trackId) {
-        trackService.deleteTrack(trackId);
     }
 }

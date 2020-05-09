@@ -66,6 +66,7 @@ public class ArtistService {
     public Artist updateArtist(Integer artistId, EditArtistDto artist) {
         Artist artistToUpdate = artistRepository.getOne(artistId);
         artistToUpdate.setName(artist.getName());
+        artistToUpdate.setDescription(artist.getDescription());
         return artistRepository.save(artistToUpdate);
     }
 

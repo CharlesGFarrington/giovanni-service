@@ -85,6 +85,17 @@ public class AlbumController {
     }
 
     /**
+     * Delete the track with specified track Id.
+     * Needs to be in the album context so that all other tracks in the album can be renumbered when this is deleted.
+     * @param trackId the track Id.
+     */
+    @DeleteMapping("/{albumId}/tracks/{trackId}")
+    public AlbumDto deleteTrack(@PathVariable Integer albumId, @PathVariable Integer trackId) {
+        Album updatedAlbum = albumService.deleteTrack(albumId, trackId);
+        return modelMapper.map(updatedAlbum, AlbumDto.class);
+    }
+
+    /**
      * Delete the album with specified album Id.
      * @param albumId the albumId.
      */

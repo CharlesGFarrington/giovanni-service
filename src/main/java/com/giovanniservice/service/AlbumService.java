@@ -48,6 +48,8 @@ public class AlbumService {
     public Album updateAlbum(Integer albumId, EditAlbumDto albumDto) {
         Album albumToUpdate = albumRepository.getOne(albumId);
         albumToUpdate.setTitle(albumDto.getTitle());
+        albumToUpdate.setReleaseDate(albumDto.getReleaseDate());
+        albumToUpdate.setAvailableToPublic(albumDto.getAvailableToPublic());
         return albumRepository.save(albumToUpdate);
     }
 
@@ -70,7 +72,30 @@ public class AlbumService {
         String trackBlobKey = UUID.randomUUID().toString();
         track.setBlobKey(trackBlobKey);
         track.setAlbum(albumRepository.getOne(albumId));
+        Integer numberOfTracks = trackRepository.countByAlbumId(albumId);
+        track.setTrackNumber(numberOfTracks + 1);
         return trackRepository.save(track);
+    }
+
+    /**
+     * Delete the track with the specified track id.
+     * Reduce track numbers on other, higher-numbered tracks in the album.
+     * @param trackId track id.
+     * @return the updated album.
+     */
+    public Album deleteTrack(Integer albumId, Integer trackId) {
+        Album albumToUpdate = albumRepository.getOne(albumId);
+        Track trackToDelete = trackRepository.getOne(trackId);
+        List<Track> tracks = albumToUpdate.getTracks();
+        tracks.forEach(track -> {
+            Integer trackNumber = track.getTrackNumber();
+            if (trackNumber > trackToDelete.getTrackNumber()) {
+                track.setTrackNumber(trackNumber - 1);
+            }
+        });
+        tracks.remove(trackToDelete);
+        trackRepository.delete(trackToDelete);
+        return albumRepository.save(albumToUpdate);
     }
 
     /**
