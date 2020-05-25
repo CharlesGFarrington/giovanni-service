@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
@@ -33,7 +34,7 @@ public class Album {
     @JoinColumn(foreignKey = @ForeignKey(name = "FK_ARTIST_ID"))
     private Artist artist;
 
-    @OneToMany(mappedBy = "album")
+    @OneToMany(mappedBy = "album", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Track> tracks;
 
     private String artworkBlobKey;

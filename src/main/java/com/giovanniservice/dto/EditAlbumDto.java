@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
+import java.util.List;
 
 /**
  * Model class for album information on create.
@@ -20,4 +21,5 @@ public class EditAlbumDto {
     @NotNull
     private Boolean availableToPublic;
     private String artworkBlobKey;
+    private List<TrackDto> tracks;
 }

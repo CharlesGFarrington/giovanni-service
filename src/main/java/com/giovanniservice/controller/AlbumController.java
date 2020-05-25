@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -73,14 +75,19 @@ public class AlbumController {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Add a new track to the album.
-     * @param trackDto track to add.
-     * @return the saved track.
-     */
     @PostMapping("/{albumId}/tracks")
-    public TrackDto createTrack(@PathVariable Integer albumId, @Valid @RequestBody EditTrackDto trackDto) {
-        Track trackCreated = albumService.addTrack(albumId, trackDto);
+    public TrackDto createTrack(@PathVariable Integer albumId,
+                                @RequestParam String title,
+                                @RequestParam Boolean availableToPublic,
+                                @RequestParam String songwriter,
+                                @RequestParam String lyrics,
+                                @RequestParam(required=false) MultipartFile audioFile) {
+        EditTrackDto trackDto = new EditTrackDto();
+        trackDto.setTitle(title);
+        trackDto.setAvailableToPublic(availableToPublic);
+        trackDto.setSongwriter(songwriter);
+        trackDto.setLyrics(lyrics);
+        Track trackCreated = albumService.addTrack(albumId, trackDto, audioFile);
         return modelMapper.map(trackCreated, TrackDto.class);
     }
 

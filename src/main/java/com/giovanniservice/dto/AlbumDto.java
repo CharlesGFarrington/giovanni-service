@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 /**
  * Model class for album information.
@@ -16,5 +15,4 @@ public class AlbumDto extends EditAlbumDto {
     private Integer id;
     @NotNull
     private String artistId;
-    private List<TrackDto> tracks;
 }

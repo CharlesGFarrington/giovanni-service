@@ -8,10 +8,12 @@ import com.giovanniservice.repository.AlbumRepository;
 import com.giovanniservice.repository.TrackRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Service class for albums
@@ -21,11 +23,13 @@ public class AlbumService {
     private static String ALBUM_NOT_FOUND = "Could not find the album with id %d";
     private AlbumRepository albumRepository;
     private TrackRepository trackRepository;
+    private BlobStorageService blobStorageService;
     private ModelMapper modelMapper;
 
-    public AlbumService(AlbumRepository albumRepository, TrackRepository trackRepository, ModelMapper modelMapper) {
+    public AlbumService(AlbumRepository albumRepository, TrackRepository trackRepository, BlobStorageService blobStorageService, ModelMapper modelMapper) {
         this.albumRepository = albumRepository;
         this.trackRepository = trackRepository;
+        this.blobStorageService = blobStorageService;
         this.modelMapper = modelMapper;
     }
 
@@ -50,6 +54,11 @@ public class AlbumService {
         albumToUpdate.setTitle(albumDto.getTitle());
         albumToUpdate.setReleaseDate(albumDto.getReleaseDate());
         albumToUpdate.setAvailableToPublic(albumDto.getAvailableToPublic());
+        if (albumDto.getTracks() != null) {
+            List<Track> mappedTracks = albumDto.getTracks().stream().map(track -> modelMapper.map(track, Track.class))
+                    .collect(Collectors.toList());
+            albumToUpdate.setTracks(mappedTracks);
+        }
         return albumRepository.save(albumToUpdate);
     }
 
@@ -67,10 +76,13 @@ public class AlbumService {
      * @param trackDto the track to create.
      * @return the created track.
      */
-    public Track addTrack(Integer albumId, EditTrackDto trackDto) {
+    public Track addTrack(Integer albumId, EditTrackDto trackDto, MultipartFile audioFile) {
         Track track = modelMapper.map(trackDto, Track.class);
-        String trackBlobKey = UUID.randomUUID().toString();
-        track.setBlobKey(trackBlobKey);
+        if (audioFile != null) {
+            String trackBlobKey = UUID.randomUUID().toString();
+            track.setBlobKey(trackBlobKey);
+            blobStorageService.addFileToS3(trackBlobKey, audioFile);
+        }
         track.setAlbum(albumRepository.getOne(albumId));
         Integer numberOfTracks = trackRepository.countByAlbumId(albumId);
         track.setTrackNumber(numberOfTracks + 1);

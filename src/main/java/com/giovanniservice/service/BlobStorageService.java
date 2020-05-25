@@ -54,7 +54,7 @@ public class BlobStorageService {
      * @param blobKey key to save the file to in S3.
      * @param file file to upload.
      */
-    public void addFileToS3(String blobKey, File file) {
+    private void addFileToS3(String blobKey, File file) {
         s3Client.putObject(bucketName, blobKey, file);
     }
 
